@@ -2,7 +2,7 @@
 "name": "Pass Gen",
 "short_name": "Pass Gen",
 "start_url": "https://password-generator-eight-ebon.vercel.app/",
-"display": "standalone",
+"display": "fullscreen",
 "description": "A description for your application",
 "lang": " The default language of your application",
 "dir": "auto",
