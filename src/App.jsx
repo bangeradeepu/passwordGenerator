@@ -11,7 +11,8 @@ import {
   IconButton,
   Typography,
   TextField,
-  InputAdornment
+  InputAdornment,
+  Stack
 } from '@mui/material';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
@@ -21,6 +22,10 @@ const App = () => {
   const [includeSpecialChars, setIncludeSpecialChars] = useState(true);
   const [password, setPassword] = useState('');
   const [passwordHistory, setPasswordHistory] = useState([]);
+
+
+  const [latitude, setLatitude] = useState(null);
+  const [longitude, setLongitude] = useState(null);
 
   useEffect(() => {
     const storedPasswords = JSON.parse(localStorage.getItem('passwordHistory')) || [];
@@ -61,6 +66,22 @@ const App = () => {
     navigator.clipboard.writeText(text);
     alert('Password copied to clipboard!');
   };
+  useEffect(() => {
+    // Check if Geolocation is supported by the browser
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setLatitude(position.coords.latitude);
+          setLongitude(position.coords.longitude);
+        },
+        (error) => {
+          console.error(error.message);
+        }
+      );
+    } else {
+      console.error("Geolocation is not supported by this browser.");
+    }
+  }, []);
 
   return (
     <Container maxWidth="sm">
@@ -126,6 +147,18 @@ const App = () => {
           </List>
         </>
       )}
+       <div>
+     <Stack sx={{marginTop:5}}>
+     {latitude && longitude ? (
+        <Typography>
+          Latitude: {latitude}, Longitude: {longitude}
+
+        </Typography>
+      ) : (
+        <Typography>Location Loading...</Typography>
+      )}
+     </Stack>
+    </div>
     </Container>
   );
 };
